@@ -2,14 +2,18 @@ from datetime import datetime, timedelta
 import MetaTrader5 as mt5
 
 
-def get_rates_from_date(initials, days_decrease, show_last=False):
+def get_rates_from_date(initials, start_date, show_last=False):
     mt5.initialize()
 
     values = mt5.copy_rates_range(
         initials,
         mt5.TIMEFRAME_M1,
-        datetime(2020, 8, datetime.now().day) - timedelta(days=days_decrease),
-        datetime(2020, 8, datetime.now().day + 1)
+        start_date,
+        datetime(
+            datetime.now().year,
+            datetime.now().month,
+            datetime.now().day + 1
+        )
     )
 
     mt5.shutdown()

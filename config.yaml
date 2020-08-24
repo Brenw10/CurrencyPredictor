@@ -1,3 +1,45 @@
 market:
   month_initials: ["G", "G", "J", "J", "M", "M", "Q", "Q", "V", "V", "Z", "Z"]
-  
+  initials_period:
+    G:
+      start_at:
+        day: 1
+        month: 1
+      end_at:
+        day: 14
+        month: 2
+    J:
+      start_at:
+        day: 15
+        month: 2
+      end_at:
+        day: 14
+        month: 4
+    M:
+      start_at:
+        day: 15
+        month: 4
+      end_at:
+        day: 14
+        month: 6
+    Q:
+      start_at:
+        day: 15
+        month: 6
+      end_at:
+        day: 14
+        month: 8
+    V:
+      start_at:
+        day: 15
+        month: 8
+      end_at:
+        day: 14
+        month: 10
+    Z:
+      start_at:
+        day: 15
+        month: 10
+      end_at:
+        day: 31
+        month: 12
