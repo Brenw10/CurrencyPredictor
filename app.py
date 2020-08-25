@@ -1,25 +1,29 @@
 import win
 import market
-import pandas as pd
-from datetime import datetime
+import arrayutils
+from functools import reduce
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import LSTM
 
 start_date = win.get_start_date_period()
 initials = win.get_complete_initials()
+look_back = 1
 
-rates = market.get_rates_from_date(initials, start_date)
-diffs = market.get_diff_from_column("close", rates)
+rates = market.get_rates_from_start_date(initials, start_date)
+closes = list(map(lambda val: val['close'], rates))
+dataset = arrayutils.get_diffs(closes)
 
-for val in rates:
-    print(
-        str(pd.to_datetime(val['time'], unit='s')) + " - " + str(val["close"])
-    )
+train_size = int(len(dataset) * 0.67)
+test_size = len(dataset) - train_size
 
+train, test = dataset[:train_size], dataset[train_size:]
 
-for val in diffs:
-    print(val)
+trainX, trainY = train[:len(train)], train[1:]
+testX, testY = test[:len(train)], test[1:]
 
-print(str(pd.to_datetime(rates[0]['time'], unit='s')
-          ) + " - " + str(rates[0]["close"]))
-print(start_date)
-print(len(rates))
-print(len(diffs))
+model = Sequential()
+model.add(LSTM(4, input_shape=(1, look_back)))
+model.add(Dense(1))
+model.compile(loss='mean_squared_error', optimizer='adam')
+model.fit(trainX, trainY, epochs=100, batch_size=1, verbose=2)

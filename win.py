@@ -1,13 +1,12 @@
 from datetime import datetime
 import config
 
-month_initials = config.get()["market"]["month_initials"]
-
 initials = "WIN"
 
 
 def get_month():
     current_month = datetime.now().month
+    month_initials = config.get()["market"]["month_initials"]
     return month_initials[current_month]
 
 
