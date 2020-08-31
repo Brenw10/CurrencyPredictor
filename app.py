@@ -20,4 +20,4 @@ dataset = list(map(lambda val: val['close'], rates))
 
 dataset = list(map(lambda val: [val], dataset))
 print(len(dataset))
-tutorial.main(dataset, 1, 300)
+tutorial.main(dataset, 1, 5)

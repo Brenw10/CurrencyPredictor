@@ -9,11 +9,8 @@ def get_rates_from_start_date(initials, start_date, show_last=False):
         initials,
         mt5.TIMEFRAME_M1,
         start_date,
-        datetime(
-            datetime.now().year,
-            datetime.now().month,
-            datetime.now().day + 1
-        )
+        datetime(datetime.now().year, datetime.now().month,
+                 datetime.now().day) + timedelta(days=1)
     )
 
     mt5.shutdown()
