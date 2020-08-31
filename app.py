@@ -2,22 +2,37 @@ import win
 import market
 import arrayutils
 import tutorial
+import predictor
+import numpy
+from datetime import datetime
+import matplotlib.pyplot as plt
 
 start_date = win.get_start_date_period()
 initials = win.get_complete_initials()
 
 rates = market.get_rates_from_start_date(initials, start_date)
-dataset = list(map(lambda val: val['close'], rates))
-# dataset = arrayutils.get_vector_diffs(dataset)
+# rates = market.get_rates_from_start_date(initials, datetime(2020, 8, 31, 11))
+dataset = list(map(lambda val: [val['close']], rates))
+train = predictor.normalize(dataset)
 
-# train_size = int(len(dataset) * 0.67)
-# test_size = len(dataset) - train_size
-# train, test = dataset[:train_size], dataset[train_size:]
+look_back = 1
+trainX, trainY = tutorial.create_dataset(train, look_back)
+trainX = numpy.reshape(trainX, (trainX.shape[0], 1, trainX.shape[1]))
 
-# trainX, trainY = train[1:], train[:len(train)-1]
-# testX, testY = test[1:], test[:len(train)-1]
+predictor.train(trainX, trainY, 100, look_back)
+result = predictor.get(trainX)
 
+future = result.reshape(1, -1)[0]
+for i in range(100):
+    p = numpy.array(list(map(lambda val: [val], future)))
+    p = numpy.reshape(p, (p.shape[0], 1, p.shape[1]))
+    predict = predictor.get(p)
+    last = predict[len(predict) - 1]
+    future = numpy.append(future, last)
 
-dataset = list(map(lambda val: [val], dataset))
-print(len(dataset))
-tutorial.main(dataset, 1, 5)
+future = numpy.array(list(map(lambda val: [val], future)))
+
+plt.plot(dataset)
+plt.plot(predictor.unnormalize(result))
+plt.plot(predictor.unnormalize(future))
+plt.show()
