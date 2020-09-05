@@ -38,7 +38,7 @@ import matplotlib.pyplot as plt
 # plt.show()
 
 look_back = 1
-epochs = 100000
+epochs = 500
 sequence = [10, 20, 30, 40, 50, 30, 40, 50, 60, 70, 50, 60, 70, 80, 90]
 next_sequence = [70, 80]
 
