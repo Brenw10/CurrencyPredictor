@@ -42,15 +42,15 @@ epochs = 500
 sequence = [10, 20, 30, 40, 50, 30, 40, 50, 60, 70, 50, 60, 70, 80, 90]
 next_sequence = [70, 80, 90, 100, 110, 90]
 
-diff_sequence = arrayutils.get_vector_diffs(sequence)
-diff_next_sequence = arrayutils.get_vector_diffs(sequence + next_sequence)
+diff_sequence = arrayutils.get_diffs(sequence)
+diff_next_sequence = arrayutils.get_diffs(sequence + next_sequence)
 
 predictor.train_sequence(diff_sequence, epochs, look_back)
 predict = predictor.get(diff_next_sequence, look_back)
 
-unpredictable = predictor.get_scaler_format(diff_sequence[:look_back])
-predict = unpredictable + predict.tolist()
+predict = arrayutils.get_undiff(predict, sequence[look_back])
+predict = sequence[:look_back+1] + predict
 
 plt.plot(predict)
-plt.plot(diff_sequence)
+plt.plot(sequence)
 plt.show()

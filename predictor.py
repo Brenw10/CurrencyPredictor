@@ -38,7 +38,7 @@ def get(sequence, look_back):
     dataset = create_input(dataset, look_back, False)
     dataset = numpy.reshape(dataset, (dataset.shape[0], 1, dataset.shape[1]))
     predict = model.predict(dataset)
-    return unnormalize(predict)
+    return get_scaler_unformat(unnormalize(predict))
 
 
 def train_sequence(sequence, epochs, look_back):
