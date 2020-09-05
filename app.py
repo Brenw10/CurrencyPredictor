@@ -1,6 +1,6 @@
 # import win
 # import market
-# import arrayutils
+import arrayutils
 # import tutorial
 import predictor
 # import numpy
@@ -37,18 +37,20 @@ import matplotlib.pyplot as plt
 # plt.plot(predictor.unnormalize(future))
 # plt.show()
 
-look_back = 1
+look_back = 5
 epochs = 500
 sequence = [10, 20, 30, 40, 50, 30, 40, 50, 60, 70, 50, 60, 70, 80, 90]
-next_sequence = [70, 80]
+next_sequence = [70, 80, 90, 100, 110, 90]
 
-predictor.train_sequence(sequence, epochs, look_back)
-predict = predictor.get(sequence + next_sequence, look_back)
+diff_sequence = arrayutils.get_vector_diffs(sequence)
+diff_next_sequence = arrayutils.get_vector_diffs(sequence + next_sequence)
 
-unpredictable = predictor.get_scaler_format(sequence[0:look_back])
+predictor.train_sequence(diff_sequence, epochs, look_back)
+predict = predictor.get(diff_next_sequence, look_back)
+
+unpredictable = predictor.get_scaler_format(diff_sequence[:look_back])
 predict = unpredictable + predict.tolist()
-print(predict)
 
-plt.plot(sequence)
 plt.plot(predict)
+plt.plot(diff_sequence)
 plt.show()
