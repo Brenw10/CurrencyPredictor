@@ -40,6 +40,13 @@ def get(sequence, look_back):
     predict = model.predict(dataset)
     return get_scaler_unformat(unnormalize(predict))
 
+def forecast(sequence, look_back, look_beyond):
+    for i in range(look_beyond):
+        predict = get(sequence, look_back)
+        last_predict = predict[len(predict)-1]
+        sequence.append(last_predict)
+    return sequence
+
 
 def train_sequence(sequence, epochs, look_back):
     sequence = normalize(sequence)
