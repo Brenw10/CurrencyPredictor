@@ -40,15 +40,15 @@ import matplotlib.pyplot as plt
 look_back = 5
 look_beyond = 20
 epochs = 500
-sequence = [10, 20, 30, 40, 50, 30, 40, 50, 60, 70, 50, 60, 70, 80, 90]
+sequence = [10, 20, 30, 50, 60, 70, 90, 100, 110]
 
 diff_sequence = arrayutils.get_diffs(sequence)
 
 predictor.train_sequence(diff_sequence, epochs, look_back)
 predict = predictor.forecast(diff_sequence, look_back, look_beyond)
 
-predict = arrayutils.get_undiff(predict, sequence[look_back])
-predict = sequence[:look_back+1] + predict
+predict = arrayutils.get_undiff(predict, sequence[0])
+predict = sequence[:1] + predict
 
 plt.plot(predict)
 plt.plot(sequence)
