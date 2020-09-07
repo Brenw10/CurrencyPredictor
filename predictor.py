@@ -38,14 +38,16 @@ def get(sequence, look_back):
     dataset = create_input(dataset, look_back, False)
     dataset = numpy.reshape(dataset, (dataset.shape[0], 1, dataset.shape[1]))
     predict = model.predict(dataset)
-    return get_scaler_unformat(unnormalize(predict))
+    predict = unnormalize(predict)
+    predict = get_scaler_unformat(predict)
+    return sequence[:look_back] + predict
 
 
 def forecast(sequence, look_back, look_beyond):
-    dataset = list(sequence)
-    for i in range(look_beyond):
+    dataset = get(sequence, look_back)
+    for _ in range(look_beyond - 1):
         predict = get(dataset, look_back)
-        last_predict = predict[len(predict)-1]
+        last_predict = predict[len(predict) - 1]
         dataset.append(last_predict)
     return dataset
 
