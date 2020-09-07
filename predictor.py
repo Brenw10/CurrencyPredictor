@@ -2,6 +2,7 @@ from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
+from keras.models import load_model
 import numpy
 
 scaler = MinMaxScaler(feature_range=(0, 1))
@@ -27,7 +28,7 @@ def get_scaler_unformat(dataset):
 
 
 def train(trainX, trainY, epochs, look_back):
-    model.add(LSTM(4, input_shape=(1, look_back)))
+    model.add(LSTM(1, input_shape=(1, look_back)))
     model.add(Dense(1))
     model.compile(loss='mean_squared_error', optimizer='adam')
     model.fit(trainX, trainY, epochs=epochs, batch_size=1, verbose=2)
@@ -72,3 +73,11 @@ def create_input(sequence, look_back, train=False):
 def create_output(sequence, look_back):
     data = sequence[look_back:]
     return numpy.array(data)
+
+
+def save():
+    model.save('model.h5')
+
+
+def load():
+    model = load_model('model.h5')
