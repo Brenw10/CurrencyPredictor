@@ -1,5 +1,5 @@
 predictor:
-  look_back: 10
+  look_back: 60
   look_beyond: 100
   epochs: 1
 market:

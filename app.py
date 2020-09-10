@@ -1,19 +1,26 @@
-import train
-import predict
+import win
+import market
+import predictor
+import config
+from datetime import datetime, timedelta
+import matplotlib.pyplot as plt
 
-print("Choose an option:")
-print('1 - Train and Run')
-print('2 - Train')
-print('3 - Run')
+look_back = config.get()["predictor"]['look_back']
+look_beyond = config.get()["predictor"]['look_beyond']
+epochs = config.get()["predictor"]['epochs']
+date = datetime.now()
 
-selected = int(input())
+start_date = win.get_start_date_period()
+end_date = datetime(date.year, date.month, date.day) + timedelta(days=1)
+initials = win.get_complete_initials()
 
-if selected == 1:
-    train.execute()
-    predict.execute()
-elif selected == 2:
-    train.execute()
-elif selected == 3:
-    predict.execute()
+rates = market.get_rates_from_date(initials, start_date, end_date)
+sequence = list(map(lambda val: val['close'], rates))
 
-print('Program closed')
+predictor.train_sequence(sequence, epochs, look_back)
+predict = predictor.forecast(sequence, look_back, look_beyond)
+
+plt.plot(predict, label='Predict')
+plt.plot(sequence, label='Real')
+plt.legend()
+plt.show()

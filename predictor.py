@@ -73,11 +73,3 @@ def create_input(sequence, look_back, train=False):
 def create_output(sequence, look_back):
     data = sequence[look_back:]
     return numpy.array(data)
-
-
-def save():
-    model.save('model.h5')
-
-
-def load():
-    model = load_model('model.h5')
