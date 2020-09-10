@@ -1,8 +1,6 @@
 from datetime import datetime
 import config
 
-initials = "WIN"
-
 
 def get_month():
     current_month = datetime.now().month
@@ -11,12 +9,11 @@ def get_month():
 
 
 def get_initials():
-    return initials
+    return config.get()["market"]["initials"]
 
 
 def get_year():
-    current_year = datetime.now().year
-    return current_year
+    return datetime.now().year
 
 
 def get_complete_initials():

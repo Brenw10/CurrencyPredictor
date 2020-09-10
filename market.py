@@ -6,7 +6,7 @@ def get_rates_from_date(initials, start_date, end_date, show_last=False):
 
     values = mt5.copy_rates_range(
         initials,
-        mt5.TIMEFRAME_M1,
+        mt5.TIMEFRAME_M5,
         start_date,
         end_date
     )

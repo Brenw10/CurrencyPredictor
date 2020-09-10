@@ -27,6 +27,10 @@ def get_scaler_unformat(dataset):
     return list(map(lambda x: x[0], dataset))
 
 
+def reshape(dataset):
+    return numpy.reshape(dataset, (dataset.shape[0], 1, dataset.shape[1]))
+
+
 def train(trainX, trainY, epochs, look_back):
     model.add(LSTM(1, input_shape=(1, look_back)))
     model.add(Dense(1))
@@ -37,7 +41,7 @@ def train(trainX, trainY, epochs, look_back):
 def get(sequence, look_back):
     dataset = normalize(sequence)
     dataset = create_input(dataset, look_back, False)
-    dataset = numpy.reshape(dataset, (dataset.shape[0], 1, dataset.shape[1]))
+    dataset = reshape(dataset)
     predict = model.predict(dataset)
     predict = unnormalize(predict)
     predict = get_scaler_unformat(predict)
@@ -46,9 +50,9 @@ def get(sequence, look_back):
 
 def forecast(sequence, look_back, look_beyond):
     dataset = get(sequence, look_back)
-    for _ in range(look_beyond - 1):
+    for _ in range(look_beyond-1):
         predict = get(dataset, look_back)
-        last_predict = predict[len(predict) - 1]
+        last_predict = predict[len(predict)-1]
         dataset.append(last_predict)
     return dataset
 
@@ -57,7 +61,7 @@ def train_sequence(sequence, epochs, look_back):
     sequence = normalize(sequence)
     trainX = create_input(sequence, look_back, True)
     trainY = create_output(sequence, look_back)
-    trainX = numpy.reshape(trainX, (trainX.shape[0], 1, trainX.shape[1]))
+    trainX = reshape(trainX)
     train(trainX, trainY, epochs, look_back)
 
 

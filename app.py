@@ -17,10 +17,11 @@ initials = win.get_complete_initials()
 rates = market.get_rates_from_date(initials, start_date, end_date)
 sequence = list(map(lambda val: val['close'], rates))
 
-predictor.train_sequence(sequence, epochs, look_back)
+predictor.train_sequence(sequence[int(len(sequence) / 2):], epochs, look_back)
 predict = predictor.forecast(sequence, look_back, look_beyond)
 
-plt.plot(predict, label='Predict')
+plt.plot(predict, label='Forecast')
+plt.plot(predict[:len(sequence)], label='Predict')
 plt.plot(sequence, label='Real')
 plt.legend()
 plt.show()

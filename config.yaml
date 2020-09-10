@@ -1,8 +1,9 @@
 predictor:
-  look_back: 60
+  look_back: 50
   look_beyond: 100
-  epochs: 1
+  epochs: 100
 market:
+  initials: "WIN"
   month_initials: ["G", "G", "J", "J", "M", "M", "Q", "Q", "V", "V", "Z", "Z"]
   initials_period:
     G:
