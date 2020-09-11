@@ -10,4 +10,4 @@ def get_undiff(array, start_value):
     for i in range(len(array)):
         array[i] = array[i] + current_value
         current_value = array[i]
-    return array
+    return [start_value] + array
