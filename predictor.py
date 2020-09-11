@@ -51,7 +51,8 @@ def get(sequence, look_back):
 def forecast(sequence, look_back, look_beyond):
     dataset = get(sequence, look_back)
     for _ in range(look_beyond-1):
-        predict = get(dataset, look_back)
+        to_predict = dataset[len(dataset)-look_back:]
+        predict = get(to_predict, look_back)
         last_predict = predict[len(predict)-1]
         dataset.append(last_predict)
     return dataset
@@ -65,13 +66,13 @@ def train_sequence(sequence, epochs, look_back):
     train(trainX, trainY, epochs, look_back)
 
 
-def create_input(sequence, look_back, train=False):
+def create_input(sequence, look_back, is_train=False):
     data = []
     for i in range(len(sequence)-look_back+1):
         value = sequence[i:i+look_back]
         data.append(value)
     data = numpy.array(data)
-    return data[:-1] if train else data
+    return data[:-1] if is_train else data
 
 
 def create_output(sequence, look_back):
