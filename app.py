@@ -1,25 +1,27 @@
 import win
 import market
-import pandas as pd
-from datetime import datetime
+import predictor
+import config
+from datetime import datetime, timedelta
+import matplotlib.pyplot as plt
+
+look_back = config.get()["predictor"]['look_back']
+look_beyond = config.get()["predictor"]['look_beyond']
+epochs = config.get()["predictor"]['epochs']
+date = datetime.now()
 
 start_date = win.get_start_date_period()
+end_date = datetime(date.year, date.month, date.day) + timedelta(days=1)
 initials = win.get_complete_initials()
 
-rates = market.get_rates_from_date(initials, start_date)
-diffs = market.get_diff_from_column("close", rates)
+rates = market.get_rates_from_date(initials, start_date, end_date)
+sequence = list(map(lambda val: val['close'], rates))
 
-for val in rates:
-    print(
-        str(pd.to_datetime(val['time'], unit='s')) + " - " + str(val["close"])
-    )
+predictor.train_sequence(sequence[int(len(sequence) * 0.90):], epochs, look_back)
+predict = predictor.forecast(sequence, look_back, look_beyond)
 
-
-for val in diffs:
-    print(val)
-
-print(str(pd.to_datetime(rates[0]['time'], unit='s')
-          ) + " - " + str(rates[0]["close"]))
-print(start_date)
-print(len(rates))
-print(len(diffs))
+plt.plot(sequence + predict[len(sequence):], label='Forecast')
+plt.plot(predict[:len(sequence)], label='Predict')
+plt.plot(sequence, label='Real')
+plt.legend()
+plt.show()
