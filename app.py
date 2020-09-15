@@ -10,6 +10,7 @@ look_back = config.get()["predictor"]['look_back']
 look_beyond = config.get()["predictor"]['look_beyond']
 epochs = config.get()["predictor"]['epochs']
 train_size = config.get()["predictor"]['train_size']
+real_size = config.get()["predictor"]['real_size']
 
 
 def get_sequence():
@@ -29,12 +30,11 @@ def train():
 
 def predict():
     sequence = get_sequence()
-    real_predict = predictor.get(sequence, look_back)
     forecast_predict = predictor.forecast(sequence, look_back, look_beyond)
 
-    plt.plot(sequence + forecast_predict, label='Forecast')
-    plt.plot(real_predict, label='Predict')
-    plt.plot(sequence, label='Real')
+    show_sequence = sequence[len(sequence) - real_size:]
+    plt.plot(show_sequence + forecast_predict, label='Forecast', color='blue')
+    plt.plot(show_sequence, label='Real', color='green')
     plt.legend()
     plt.show()
 
