@@ -9,7 +9,7 @@ date = datetime.now()
 look_back = config.get()["predictor"]['look_back']
 look_beyond = config.get()["predictor"]['look_beyond']
 epochs = config.get()["predictor"]['epochs']
-train_size = 1 - config.get()["predictor"]['train_size']
+train_size = config.get()["predictor"]['train_size']
 
 
 def get_sequence():
@@ -23,16 +23,17 @@ def get_sequence():
 
 def train():
     sequence = get_sequence()
-    size = int(len(sequence) * train_size)
-    predictor.train_sequence(sequence[size:], epochs, look_back)
+    start_at = len(sequence) - train_size
+    predictor.train_sequence(sequence[start_at:], epochs, look_back)
 
 
 def predict():
     sequence = get_sequence()
-    result = predictor.forecast(sequence, look_back, look_beyond)
+    real_predict = predictor.get(sequence, look_back)
+    forecast_predict = predictor.forecast(sequence, look_back, look_beyond)
 
-    plt.plot(sequence + result[len(sequence):], label='Forecast')
-    plt.plot(result[:len(sequence)], label='Predict')
+    plt.plot(sequence + forecast_predict, label='Forecast')
+    plt.plot(real_predict, label='Predict')
     plt.plot(sequence, label='Real')
     plt.legend()
     plt.show()

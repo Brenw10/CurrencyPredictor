@@ -49,13 +49,13 @@ def get(sequence, look_back):
 
 
 def forecast(sequence, look_back, look_beyond):
-    dataset = get(sequence, look_back)
-    for _ in range(look_beyond-1):
-        to_predict = dataset[len(dataset)-look_back:]
+    dataset = list(sequence)
+    for _ in range(look_beyond):
+        to_predict = dataset[len(dataset) - look_back:]
         predict = get(to_predict, look_back)
-        last_predict = predict[len(predict)-1]
+        last_predict = predict[len(predict) - 1]
         dataset.append(last_predict)
-    return dataset
+    return dataset[len(dataset) - look_beyond:]
 
 
 def train_sequence(sequence, epochs, look_back):
