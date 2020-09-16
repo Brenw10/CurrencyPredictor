@@ -2,8 +2,8 @@ predictor:
   look_back: 100
   look_beyond: 60
   epochs: 100
-  train_size: 500
-  real_size: 50
+  train_size: 700
+  real_size: 40
 market:
   initials: "WIN"
   month_initials: ["G", "G", "J", "J", "M", "M", "Q", "Q", "V", "V", "Z", "Z"]
