@@ -32,7 +32,7 @@ def reshape(dataset):
 
 
 def train(trainX, trainY, epochs, look_back):
-    model.add(LSTM(1, input_shape=(1, look_back)))
+    model.add(LSTM(4, input_shape=(1, look_back)))
     model.add(Dense(1))
     model.compile(loss='mean_squared_error', optimizer='adam')
     model.fit(trainX, trainY, epochs=epochs, batch_size=1, verbose=2)
